@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Bride Complete Profile</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Dancing+Script&family=Libre+Bodoni:ital,wght@1,700&family=Lily+Script+One&family=Lobster&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Libre Bodoni', sans-serif;
+      background: linear-gradient(135deg, #ffd86c, #d47d0a);
+      background-size: 300% 300%;
+      animation: gradientBG 20s ease infinite;
+    }
+    h1, h2, h3 {
+      font-family: 'Libre Bodoni', cursive;
+    }
+    @keyframes gradientBG {
+      0%, 100% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+    }
+  </style>
+</head>
+<body class="min-h-screen flex flex-col items-center justify-start p-6">
+  <!-- Back and Logout Buttons -->
+  <div class="w-full max-w-7xl mb-6 flex justify-between">
+    <a href="{{ url_for('home') }}" 
+       class="inline-block bg-pink-500 hover:bg-pink-600 text-white font-semibold py-2 px-4 rounded-lg shadow-md transition-all text-sm sm:text-base">
+      ⬅ Back to Home
+    </a>
+    <a href="{{ url_for('logout') }}" 
+       class="inline-block bg-red-500 hover:bg-red-600 text-white font-semibold py-2 px-4 rounded-lg shadow-md transition-all text-sm sm:text-base">
+      🔒 Logout
+    </a>
+  </div>
+
+  <!-- Page Header -->
+  <h1 class="text-5xl text-pink-700 mb-10 drop-shadow-xl">
+  👰 Welcome, {{ profile['full_name']}}
+</h1>
+  <!-- Bride Profile Card -->
+  <div class="w-full max-w-6xl bg-white/90 rounded-3xl shadow-2xl border border-pink-200 p-6 flex flex-col md:flex-row items-center gap-6 mb-16 backdrop-blur-sm">
+    <img src="{{ profile['images'][0] }}" alt="Bride Image"
+         class="w-40 h-40 rounded-2xl border-4 border-pink-300 object-cover shadow-lg" />
+
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 text-sm text-gray-700 w-full">
+  {% for key, value in profile.items() %}
+    {% if key != 'images' and key != 'video' %}
+    <div>
+      <strong class="text-pink-600">{{ key.replace('_', ' ').title() }}:</strong>
+      {{ value }}
+    </div>
+    {% endif %}
+  {% endfor %}
+</div>
+  </div>
+
+  <!-- Bride Images -->
+  <h2 class="text-3xl text-pink-600 font-bold mb-6">📸 Bride's Photos</h2>
+  <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-16 w-full max-w-6xl">
+    {% for image in profile['images'] %}
+    <img src="{{ image }}" alt="Bride Image" class="w-full h-60 object-cover rounded-xl shadow-lg transition-transform duration-300 hover:scale-105">
+    {% endfor %}
+  </div>
+
+  <!-- Chat Section -->
+  <h2 class="text-3xl text-pink-600 font-bold mb-6">💬 Chat with {{ groom['full_name'] }}</h2>
+
+  <!-- Chat Info -->
+  <div class="w-full max-w-4xl bg-white rounded-3xl shadow-lg p-6 border border-pink-100 mb-10">
+    <div class="flex items-center justify-between text-sm text-gray-600 mb-2 font-semibold">
+      <span class="bg-sky-200 px-3 py-1 rounded-full">{{ groom['username'] }}</span>
+      <span>Room ID: 
+        <span class="bg-yellow-100 px-2 py-1 rounded-md font-mono text-pink-700">
+          {{ profile['username'] }}_{{ groom['username'] }}
+        </span>
+      </span>
+      <span class="bg-pink-300 px-3 py-1 rounded-full">{{ profile['username'] }}</span>
+    </div>
+
+    <!-- Hidden Room ID -->
+    <input type="hidden" id="roomId" value="{{ profile['username'] }}_{{ groom['username'] }}">
+
+    <!-- Chat Window -->
+    <div id="chatWindow" class="h-60 overflow-y-auto p-4 bg-pink-200 rounded-xl mb-4 space-y-2">
+      <!-- Dynamic messages will appear here -->
+    </div>
+
+    <!-- Chat Input -->
+    <div class="flex gap-3">
+      <input id="chatInput" type="text" placeholder="Type a heartfelt message..." class="flex-1 p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-pink-400">
+      <button id="sendMessage" class="bg-pink-500 hover:bg-pink-600 text-white font-semibold py-2 px-6 rounded-lg shadow-md transition">Send</button>
+    </div>
+  </div>
+
+<script>
+  const chatWindow = document.getElementById('chatWindow');
+  const chatInput = document.getElementById('chatInput');
+  const sendMessage = document.getElementById('sendMessage');
+  const roomId = document.getElementById('roomId').value;
+
+  // Bride ka profile open hai → Bride is sender
+  const sender = "{{ profile['username'] }}";
+  const receiver = "{{ groom['username'] }}";
+
+  // Function to fetch messages
+  async function fetchMessages() {
+    try {
+      const response = await fetch(`/get_messages?room_id=${roomId}&sender=${sender}&receiver=${receiver}`);
+      if (response.ok) {
+        const messages = await response.json();
+        chatWindow.innerHTML = '';
+
+        messages.forEach((msg) => {
+          const messageContainer = document.createElement('div');
+          const messageElement = document.createElement('div');
+          const timestampElement = document.createElement('div');
+
+          messageElement.textContent = msg.message;
+          timestampElement.textContent = `${msg.date} ${msg.time}`;
+          timestampElement.className = 'text-xs text-gray-500 mt-1';
+
+          if (msg.sender === sender) {
+            // ✅ Bride ka apna message → RIGHT (pink bubble)
+            messageElement.className = 'ml-auto bg-pink-400 text-gray-900 p-3 rounded-lg w-fit max-w-[70%] shadow-md';
+            timestampElement.className += ' text-right';
+          } else {
+            // ✅ Groom ka reply → LEFT (purple bubble)
+            messageElement.className = 'mr-auto bg-sky-400 text-gray-900 p-3 rounded-lg w-fit max-w-[70%] shadow-md';
+            timestampElement.className += ' text-left';
+          }
+
+          messageContainer.className = 'mb-4';
+          messageContainer.appendChild(messageElement);
+          messageContainer.appendChild(timestampElement);
+
+          chatWindow.appendChild(messageContainer);
+        });
+
+        chatWindow.scrollTop = chatWindow.scrollHeight;
+      }
+    } catch (error) {
+      console.error('Error fetching messages:', error);
+    }
+  }
+
+  setInterval(fetchMessages, 2000);
+
+  // ✅ Common function (click + enter dono handle karega)
+  async function handleSendMessage() {
+    const message = chatInput.value.trim();
+    if (message) {
+      const messageContainer = document.createElement('div');
+      const messageElement = document.createElement('div');
+      const timestampElement = document.createElement('div');
+
+      messageElement.textContent = message;
+      // ✅ Bride ka apna message hamesha RIGHT side
+      messageElement.className = 'ml-auto bg-pink-400 text-gray-900 p-3 rounded-lg w-fit max-w-[70%] shadow-md';
+
+      const now = new Date();
+      const currentTimestamp = `${now.toISOString().split('T')[0]} ${now.toTimeString().split(' ')[0]}`;
+      timestampElement.textContent = currentTimestamp;
+      timestampElement.className = 'text-xs text-gray-500 mt-1 text-right';
+
+      messageContainer.className = 'mb-4';
+      messageContainer.appendChild(messageElement);
+      messageContainer.appendChild(timestampElement);
+
+      chatWindow.appendChild(messageContainer);
+      chatInput.value = '';
+      chatWindow.scrollTop = chatWindow.scrollHeight;
+
+      try {
+        const response = await fetch('/save_message', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            Sender: sender,
+            Receiver: receiver,
+            Message: message,
+            Room_ID: roomId,
+          }),
+        });
+        if (!response.ok) console.error('Failed to save message');
+      } catch (error) {
+        console.error('Error:', error);
+      }
+    }
+  }
+
+  // ✅ Send button click event
+  sendMessage.addEventListener('click', handleSendMessage);
+
+  // ✅ Enter key press event
+  chatInput.addEventListener('keydown', function(event) {
+    if (event.key === 'Enter') {
+      event.preventDefault();
+      handleSendMessage();
+    }
+  });
+
+  fetchMessages();
+</script>
+</body>
+</html>

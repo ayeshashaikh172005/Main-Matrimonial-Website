@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Saathi.com - Find Your Life Partner</title>
+
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Dancing+Script&family=Libre+Bodoni:ital,wght@1,700&family=Lily+Script+One&family=Lobster&display=swap" rel="stylesheet">
+  <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet" />
+
+  <style>
+    body {
+      font-family: 'Libre Bodoni', sans-serif;
+      background-color: #fffafc;
+    }
+
+    .animated-heart {
+      animation: pulse 1.5s infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.1); }
+    }
+
+    .modal {
+      display: none;
+    }
+
+    .modal.active {
+      display: flex;
+      animation: fadeIn 0.4s ease-in-out;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: scale(0.95); }
+      to { opacity: 1; transform: scale(1); }
+    }
+  </style>
+</head>
+
+<body class="text-gray-800 relative">
+
+  <!-- Hero Section -->
+  <section class="relative bg-cover bg-center bg-no-repeat text-white min-h-screen flex flex-col justify-center items-center text-center p-8 overflow-hidden" 
+         style="background-image: url('https://i.pinimg.com/1200x/56/65/0e/56650ecf9f16d52d2726509518dd363f.jpg');" 
+         data-aos="zoom-in">
+            <div class="relative z-10 text-[#FFD700]" style="text-shadow: 2px 2px 4px #000000;">
+  <h1 class="text-8xl font-bold">Forever Begins Here</h1>
+  <p class="mt-4 text-5xl">A golden moment in time</p>
+</div>
+
+    <!-- Login Buttons -->
+    <div class="mt-8 flex space-x-4 justify-center">
+  <button onclick="openModal('brideModal')" class="bg-[#FFD700] text-white text-xl hover:bg-[#FFC300] font-semibold py-3 px-8 rounded-full shadow-lg transition duration-300">
+    Bride Login
+  </button>
+  <button onclick="openModal('groomModal')" class="bg-[#FFD700] text-white text-xl hover:bg-[#FFC300] font-semibold py-3 px-8 rounded-full shadow-lg transition duration-300">
+    Groom Login
+  </button>
+</div>
+
+    <!-- Decorative Circles -->
+    <div class="absolute -top-10 left-0 w-32 h-32 bg-white opacity-10 rounded-full blur-2xl"></div>
+    <div class="absolute bottom-10 right-0 w-40 h-40 bg-white opacity-10 rounded-full blur-2xl"></div>
+  </section>
+
+  <!-- Bride Modal -->
+  <div id="brideModal" class="modal fixed inset-0 bg-black bg-opacity-60 justify-center items-center z-50">
+    <div class="bg-white rounded-2xl shadow-2xl max-w-md w-full p-6 relative overflow-hidden border-4 border-pink-200">
+      <button onclick="closeModal('brideModal')" class="absolute top-3 right-4 text-2xl font-bold text-pink-500">&times;</button>
+      <div class="flex justify-center mb-4">
+        <img src="../static/images/explore profiles/Bride.jpeg" alt="Bride Icon" class="w-32 h-32 rounded-full shadow-lg border-4 border-white bg-pink-100 p-2">
+      </div>
+      <h3 class="text-3xl font-bold text-pink-600 text-center mb-4">Bride Login</h3>
+      <input id="brideUsername" type="text" placeholder="Username" class="w-full p-3 mb-4 rounded-lg border border-pink-300 focus:outline-none focus:ring-2 focus:ring-pink-500">
+      <input id="bridePassword" type="password" placeholder="Password" class="w-full p-3 mb-4 rounded-lg border border-pink-300 focus:outline-none focus:ring-2 focus:ring-pink-500">
+      <button onclick="loginBride()" class="w-full bg-pink-600 hover:bg-pink-700 text-white font-semibold py-3 rounded-lg transition duration-300">Find Partner</button>
+      <p class="text-center mt-4 text-sm text-gray-700">
+       New User? <a href="{{ url_for('create_bride_profile') }}" class="text-pink-600 hover:underline">Create Profile</a>
+      </p>
+    </div>
+  </div>
+
+  <!-- Bride Profile Modal -->
+  <div id="brideProfileModal" class="modal hidden fixed inset-0 bg-black bg-opacity-60 justify-center items-center z-50">
+    <div class="bg-white rounded-2xl shadow-2xl max-w-3xl w-full p-6 relative overflow-hidden border-4 border-pink-200">
+      <button onclick="closeModal('brideProfileModal')" class="absolute top-3 right-4 text-2xl font-bold text-pink-500">&times;</button>
+      <div class="flex gap-6">
+        <img id="brideProfileImage" src="" alt="Bride Image" class="w-48 h-48 rounded-xl shadow-lg border-4 border-pink-300">
+        <div>
+          <h3 id="brideFullName" class="text-3xl font-bold text-pink-600 mb-2"></h3>
+          <p id="brideEmail" class="text-gray-700 mb-1"></p>
+          <p id="bridePhone" class="text-gray-700 mb-1"></p>
+          <p id="brideUsernameDisplay" class="text-gray-700 mb-1"></p>
+          <p id="brideProfession" class="text-gray-700 mb-1"></p>
+          <p id="brideAge" class="text-gray-700 mb-1"></p>
+          <button onclick="window.location.href='/bride-profile/' + document.getElementById('brideUsernameDisplay').textContent.split(': ')[1]" class="mt-4 bg-pink-600 hover:bg-pink-700 text-white font-semibold py-2 px-4 rounded-lg transition duration-300">Let's Find My Match</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Groom Modal -->
+  <div id="groomModal" class="modal fixed inset-0 bg-black bg-opacity-60 justify-center items-center z-50">
+    <div class="bg-white rounded-2xl shadow-2xl max-w-md w-full p-6 relative overflow-hidden border-4 border-red-200">
+      <button onclick="closeModal('groomModal')" class="absolute top-3 right-4 text-2xl font-bold text-red-500">&times;</button>
+      <div class="flex justify-center mb-4">
+        <img src="../static/images/explore profiles/Groom.jpeg" alt="Groom Icon" class="w-32 h-32 rounded-full shadow-lg border-4 border-white bg-red-100 p-2">
+      </div>
+      <h3 class="text-3xl font-bold text-red-600 text-center mb-4">Groom Login</h3>
+      <input id="groomUsername" type="text" placeholder="Username" class="w-full p-3 mb-4 rounded-lg border border-red-300 focus:outline-none focus:ring-2 focus:ring-red-500">
+      <input id="groomPassword" type="password" placeholder="Password" class="w-full p-3 mb-4 rounded-lg border border-red-300 focus:outline-none focus:ring-2 focus:ring-red-500">
+      <button onclick="loginGroom()" class="w-full bg-red-600 hover:bg-red-700 text-white font-semibold py-3 rounded-lg transition duration-300">Find Partner</button>
+      <p class="text-center mt-4 text-sm text-gray-700">
+        New User? <a href="{{ url_for('create_groom_profile') }}" class="text-red-600 hover:underline">Create Profile</a>
+      </p>
+    </div>
+  </div>
+
+  <!-- Groom Profile Modal -->
+  <div id="groomProfileModal" class="modal hidden fixed inset-0 bg-black bg-opacity-60 justify-center items-center z-50">
+    <div class="bg-white rounded-2xl shadow-2xl max-w-3xl w-full p-6 relative overflow-hidden border-4 border-red-200">
+      <button onclick="closeModal('groomProfileModal')" class="absolute top-3 right-4 text-2xl font-bold text-red-500">&times;</button>
+      <div class="flex gap-6">
+        <img id="groomProfileImage" src="" alt="Groom Image" class="w-48 h-48 rounded-xl shadow-lg border-4 border-red-300">
+        <div>
+          <h3 id="groomFullName" class="text-3xl font-bold text-red-600 mb-2"></h3>
+          <p id="groomEmail" class="text-gray-700 mb-1"></p>
+          <p id="groomPhone" class="text-gray-700 mb-1"></p>
+          <p id="groomUsernameDisplay" class="text-gray-700 mb-1"></p>
+          <p id="groomProfession" class="text-gray-700 mb-1"></p>
+          <p id="groomDOB" class="text-gray-700 mb-1"></p>
+          <button onclick="window.location.href='/groom-profile/' + document.getElementById('groomUsernameDisplay').textContent.split(': ')[1]" class="mt-4 bg-red-600 hover:bg-red-700 text-white font-semibold py-2 px-4 rounded-lg transition duration-300">Let's Find My Match</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- AOS and Modal Script -->
+  <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+  <script>
+    AOS.init({ duration: 1000 });
+
+    function openModal(id) {
+      document.getElementById(id).classList.add('active');
+    }
+
+    function closeModal(id) {
+      document.getElementById(id).classList.remove('active');
+    }
+
+    window.addEventListener('keydown', function(e) {
+      if (e.key === 'Escape') {
+        closeModal('brideModal');
+        closeModal('groomModal');
+        closeModal('brideProfileModal');
+        closeModal('groomProfileModal');
+      }
+    });
+
+    function loginBride() {
+      const username = document.getElementById("brideUsername").value;
+      const password = document.getElementById("bridePassword").value;
+      console.log(username,password);
+      fetch("/bride-login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ username, password }),
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          if (data.success) {
+            const profile = data.profile;
+            document.getElementById("brideProfileImage").src = profile.image;
+            document.getElementById("brideFullName").textContent = profile.full_name;
+            document.getElementById("brideEmail").textContent = `Email: ${profile.email_id}`;
+            document.getElementById("bridePhone").textContent = `Phone: ${profile.phone_number}`;
+            document.getElementById("brideUsernameDisplay").textContent = `Username: ${profile.username}`;
+            document.getElementById("brideProfession").textContent = `Profession: ${profile.profession}`;
+            document.getElementById("brideAge").textContent = `Age: ${profile.age}`;
+            closeModal("brideModal");
+            openModal("brideProfileModal");
+          } else {
+            alert(data.message);
+          }
+        });
+    }
+
+    function loginGroom() {
+      const username = document.getElementById("groomUsername").value;
+      const password = document.getElementById("groomPassword").value;
+
+      fetch("/groom-login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ username, password }),
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          if (data.success) {
+            const profile = data.profile;
+            document.getElementById("groomProfileImage").src = profile.image;
+            document.getElementById("groomFullName").textContent = profile.full_name;
+            document.getElementById("groomEmail").textContent = `Email: ${profile.email_id}`;
+            document.getElementById("groomPhone").textContent = `Phone: ${profile.phone_number}`;
+            document.getElementById("groomUsernameDisplay").textContent = `Username: ${profile.username}`;
+            document.getElementById("groomProfession").textContent = `Profession: ${profile.profession}`;
+            document.getElementById("groomDOB").textContent = `Date of Birth: ${profile.date_of_birth}`;
+            closeModal("groomModal");
+            openModal("groomProfileModal");
+          } else {
+            alert(data.message);
+          }
+        });
+    }
+  </script>
+</body>
+</html>

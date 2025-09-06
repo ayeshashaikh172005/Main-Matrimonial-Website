@@ -1,0 +1,45 @@
+@import url('https://fonts.googleapis.com/css2?family=Dancing+Script&family=Libre+Bodoni:ital,wght@1,700&family=Lily+Script+One&family=Lobster&display=swap');
+
+
+body {
+    font-family: Libre Bodoni, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #fff5f7;
+    color: #333;
+}
+
+.about-section {
+    padding: 50px 20px;
+    background: linear-gradient(135deg, #ffd86c, #d47d0a);
+    min-height: 100vh;
+}
+
+.container {
+    max-width: 900px;
+    margin: auto;
+    background: white;
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+}
+
+h1 {
+    text-align: center;
+    color: #754805;
+    margin-bottom: 20px;
+}
+
+p {
+    font-size: 1.1rem;
+    line-height: 1.8;
+    margin-bottom: 15px;
+    text-align: justify;
+}
+
+.highlight {
+    text-align: center;
+    font-weight: bold;
+    color: #754805;
+    font-size: 1.2rem;
+}

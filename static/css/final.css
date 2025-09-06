@@ -1,0 +1,269 @@
+/* Global Styles */
+@import url('https://fonts.googleapis.com/css2?family=Dancing+Script&family=Libre+Bodoni:ital,wght@1,700&family=Lily+Script+One&family=Lobster&display=swap');
+
+:root {
+  --primary-color: #5c0202;
+  --secondary-color: #c69c6d;
+  --background-dark: #2C1B0C;
+  --text-light: #fff;
+  --font-heading: 'Libre Bodoni', sans-serif;
+}
+
+body {
+  margin: 0;
+  font-family: 'Libre Bodoni', sans-serif;
+  background-color: var(--background-dark);
+  color: var(--text-light);
+}
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  padding: 1rem 2rem;
+  background-color: var(--background-dark);
+  color: var(--text-light);
+  align-items: center;
+}
+
+.logo {
+  font-size: 2rem;
+  font-weight: bolder;
+}
+
+.nav-links a {
+  color: var(--text-light);
+  margin-left: 1.5rem;
+  text-decoration: none;
+  font-size: 1.5rem;
+}
+/* Hero Section (Main Banner) */
+.hero {
+  background: url('../images/layout/couple.jpg') no-repeat center top;
+  background-size: cover;
+  background-position: center 40%;  /* Moves the image slightly down */
+  height: 100vh;
+  position: relative;
+}
+
+.hero .overlay {
+  width: 100%;
+  height: 100%;
+  background-color: rgba(26, 17, 10, 0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.hero-content {
+  text-align: center;
+  max-width: 600px;
+  padding: 2rem;
+}
+
+.hero-content h1 {
+  font-family: var(--font-heading);
+  font-size: 3rem;
+  line-height: 1.2;
+  margin-bottom: 1rem;
+}
+
+.hero-content p {
+  font-size: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.register-btn {
+  background-color: var(--secondary-color);
+  color: var(--primary-color);
+  border: none;
+  padding: 0.75rem 1.5rem;
+  font-size: 1.7rem;
+  cursor: pointer;
+  border-radius: 5px;
+  transition: background-color 0.3s ease;
+  font-family: 'Libre Bodoni', sans-serif;
+}
+
+.register-btn:hover {
+  background-color: #e6c200;
+}
+
+.welcome {
+  background-color: var(--background-dark);
+  text-align: center;
+  padding: 1.5rem 1rem;
+}
+
+.welcome h2 {
+  font-family: var(--font-heading);
+  font-size: 2rem;
+  margin-bottom: 1rem;
+}
+
+.welcome p {
+  font-size: 1rem;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+/* Success Stories Section */
+.success-embed {
+  background-image: url('../images/layout/img.jpeg'); /* Change this path to your actual image */
+  background-size: cover;
+  background-position: center;
+  padding: 60px 20px;
+}
+.success-title {
+  text-align: center;
+  font-size: 5rem;
+  color: #fff;
+  margin-top: 30px;
+  margin-bottom: 20px;
+  font-weight: bold;
+  letter-spacing: 1px;
+}
+/* Explore Matrimonial Profiles */
+.explore-profiles {
+  background: url('../images/layout/people.jpeg') no-repeat center center/cover;
+  height: 100vh;
+  position: relative;
+}
+
+.explore-profiles .overlay {
+  width: 100%;
+  height: 100%;
+  background-color: rgba(26, 17, 10, 0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.explore-profiles .hero-content {
+  text-align: center;
+  max-width: 600px;
+  padding: 2rem;
+  color: var(--text-light);
+}
+
+.explore-profiles h1 {
+  font-family: var(--font-heading);
+  font-size: 3rem;
+  line-height: 1.2;
+  margin-bottom: 1rem;
+}
+
+.explore-profiles p {
+  font-size: 1.1rem;
+  margin-bottom: 2rem;
+}
+
+/* Kundli Milan Section */
+.kundli-milan {
+  background: url('../images/kundli/kundli1.jpeg') no-repeat center center/cover;
+  height: 100vh;
+  position: relative;
+}
+
+.kundli-milan .overlay {
+  width: 100%;
+  height: 100%;
+  background-color: rgba(26, 17, 10, 0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.kundli-milan .hero-content {
+  text-align: center;
+  max-width: 600px;
+  padding: 2rem;
+  color: var(--text-light);
+}
+
+.kundli-milan h1 {
+  font-family: var(--font-heading);
+  font-size: 3rem;
+  line-height: 1.2;
+  margin-bottom: 1rem;
+}
+
+.kundli-milan p {
+  font-size: 1.1rem;
+  margin-bottom: 2rem;
+}
+/* Image Gallery */
+.gallery-embed {
+  background-image: url('../images/layout/image1.jpg'); /* Change this path to your actual image */
+  background-size: cover;
+  background-position: center;
+  padding: 60px 60px;
+}
+.gallery-title {
+  text-align: center;
+  font-size: 4rem;
+  color: #fff;
+  margin-top: 30px;
+  margin-bottom: 20px;
+  font-weight: bold;
+  letter-spacing: 1px;
+}
+/* Frequently Asked Questions */
+.faqs-embed {
+  background-image: url('../images/layout/img.jpeg'); /* Change this path to your actual image */
+  background-size: cover;
+  background-position: center;
+  padding: 60px 20px;
+}
+.faqs-title {
+  text-align: center;
+  font-size: 4rem;
+  color: #fff;
+  margin-top: 30px;
+  margin-bottom: 20px;
+  font-weight: bold;
+  letter-spacing: 1px;
+}
+
+/* Chatbot */
+#chatbot-toggler {
+  /* This makes the button stay in place when scrolling */
+  position: fixed; 
+  /* Distance from the bottom of the screen */
+  bottom: 30px; 
+  /* Distance from the right of the screen */
+  right: 35px;  
+
+  /* ... other existing styles ... */
+  border: none;
+  height: 50px;
+  width: 50px;
+  display: flex;
+  cursor: pointer;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: #5350C4;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+  transition: all 0.2s ease;
+}
+
+.chatbot-popup {
+  /* This makes the popup window stay in place when scrolling */
+  position: fixed; 
+  /* Distance from the bottom of the screen */
+  bottom: 90px;
+  /* Distance from the right of the screen */ 
+  right: 35px;   
+
+  /* ... other existing styles ... */
+  width: 420px;
+  overflow: hidden;
+  background: #fff;
+  border-radius: 15px;
+  opacity: 0;
+  pointer-events: none;
+  transform: scale(0.2);
+  transform-origin: bottom right;
+  box-shadow: 0 0 128px 0 rgba(0, 0, 0, 0.1),
+    0 32px 64px -48px rgba(0, 0, 0, 0.5);
+  transition: all 0.1s ease;
+}

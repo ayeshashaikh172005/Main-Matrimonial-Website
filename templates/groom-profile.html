@@ -1,0 +1,609 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Groom Profile - Jeevansathi</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Dancing+Script&family=Libre+Bodoni:ital,wght@1,700&family=Lily+Script+One&family=Lobster&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Libre Bodoni', sans-serif;
+      background: linear-gradient(135deg, #ffd86c, #d47d0a);
+      background-size: 300% 300%;
+      animation: gradientBG 20s ease infinite;
+    }
+
+    h1, h2, h3 {
+      font-family: 'Libre Bodoni', cursive;
+    }
+
+    @keyframes gradientBG {
+      0%, 100% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+    }
+  </style>
+
+<style>
+    @keyframes fadeIn {
+      from { opacity: 0; transform: scale(0.95); }
+      to { opacity: 1; transform: scale(1); }
+    }
+    .animate-fadeIn {
+      animation: fadeIn 0.4s ease-out;
+    }
+    </style>
+    
+</head>
+<body class="min-h-screen flex flex-col items-center justify-start p-6">
+  <!-- Back and Logout Buttons -->
+  <div class="w-full max-w-7xl mb-6 flex justify-between">
+    <a href="{{ url_for('home') }}" 
+       class="inline-block bg-pink-500 hover:bg-pink-600 text-white font-semibold py-2 px-4 rounded-lg shadow-md transition-all text-sm sm:text-base">
+      ⬅ Back to Home
+    </a>
+    <a href="{{ url_for('logout') }}" 
+       class="inline-block bg-red-500 hover:bg-red-600 text-white font-semibold py-2 px-4 rounded-lg shadow-md transition-all text-sm sm:text-base">
+      🔒 Logout
+    </a>
+  </div>
+
+  <!-- Header -->
+  <h1 class="text-5xl text-white font-bold mb-10 drop-shadow-lg">🤵 Welcome {{profile['full_name']}}</h1>
+
+  <!-- Bride Profile Card -->
+  <div class="w-full max-w-7xl bg-white/90 rounded-3xl shadow-2xl border border-pink-100 p-6 flex flex-col md:flex-row items-center gap-6 mb-16">
+    <!-- Bride Image -->
+    <img src="{{ url_for('uploaded_file', filename=profile['image']) }}" alt="Bride Image"
+         class="w-40 h-40 rounded-2xl border-4 border-pink-300 object-cover shadow-lg" />
+
+    <!-- Bride Info -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 text-sm text-gray-700 w-full">
+  {% for key, value in profile.items() %}
+    {% if key != 'images' and key != 'video' %}
+    <div>
+      <strong class="text-blue-600">{{ key.replace('_', ' ').title() }}:</strong>
+      {{ value }}
+    </div>
+    {% endif %}
+  {% endfor %}
+</div>
+  </div>
+
+   <!-- Section Heading -->
+<h1 class="text-5xl text-white font-bold mb-10 drop-shadow-lg text-center">Suitable Brides for You</h1>
+
+ <!-- bride Cards Container -->
+<div class="w-full px-4">
+  <div class="max-w-7xl mx-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-10 mb-20">
+    {% for bride in brides %}
+    <div class="bg-white/90 rounded-3xl border border-pink-200 p-6 shadow-xl hover:shadow-pink-300 transition-all duration-300 hover:scale-[1.02] flex flex-col items-center relative overflow-hidden">
+      
+      <!-- Floral Top Accent -->
+      <div class="absolute top-[-5px] left-1/2 transform -translate-x-1/2 text-xl">
+      </div>
+
+      <!-- bride Image -->
+      <img src="{{ url_for('uploaded_file', filename=bride['image']) }}" alt="bride Image"
+           class="w-28 h-28 rounded-full border-4 border-pink-300 object-cover shadow-md mb-4" />
+
+      <!-- bride Info -->
+      <div class="text-center w-full space-y-1">
+        <h3 class="text-xl text-pink-600 font-bold">{{ bride['full_name'] }}</h3>
+      </div>
+
+      <!-- Details -->
+      <div class="grid grid-cols-1 gap-y-2 w-full mt-4 text-sm">
+        <div class="flex justify-between">
+          <span class="font-medium text-gray-700">📍 Location:</span>
+          <span class="font-semibold text-gray-900">{{ bride['city'] }}, {{ bride['state'] }}, {{ bride['country'] }}</span>
+        </div>
+        <div class="flex justify-between">
+          <span class="font-medium text-gray-700">💼 Profession:</span>
+          <span class="font-semibold text-gray-900">{{ bride['profession'] }}</span>
+        </div>
+        <div class="flex justify-between">
+          <span class="font-medium text-gray-700">💰 Package:</span>
+          <span class="font-semibold text-gray-900">{{ bride['package'] }}</span>
+        </div>
+        <div class="flex justify-between">
+          <span class="font-medium text-gray-700">🥗 Diet:</span>
+          <span class="font-semibold text-gray-900">{{ bride['diet'] }}</span>
+        </div>
+        <div class="flex justify-between">
+          <span class="font-medium text-gray-700">🎨 Complexion:</span>
+          <span class="font-semibold text-gray-900">{{ bride['complexion'] }}</span>
+        </div>
+        <div class="flex justify-between">
+          <span class="font-medium text-gray-700">📏 Height:</span>
+          <span class="font-semibold text-gray-900">{{ bride['height'] }}</span>
+        </div>
+        <div class="flex justify-between">
+          <span class="font-medium text-gray-700">🎂 Age:</span>
+          <span class="font-semibold text-gray-900">{{ bride['age'] }}</span>
+        </div>
+        <div class="flex justify-between">
+          <span class="font-medium text-gray-700">🎓 Education:</span>
+          <span class="font-semibold text-gray-900">{{ bride['education'] }}</span>
+        </div>
+      </div>
+
+      <!-- Buttons -->
+      <div class="flex flex-wrap gap-2 mt-4 justify-center">
+        {% if bride['images'] and bride['images'] | length > 0 %}
+        <button class="view-images-btn bg-pink-500 hover:bg-pink-600 text-white py-1.5 px-4 rounded-full shadow-md text-sm"
+                data-images='{{ bride["images"] | tojson | safe }}'>📷 View Images</button>
+        {% endif %}
+        {% if bride['video'] %}
+        <button class="view-video-btn bg-blue-500 hover:bg-blue-600 text-white py-1.5 px-4 rounded-full shadow-md text-sm"
+                data-video="{{ url_for('uploaded_file', filename=bride['video']) }}">🎥 Video</button>
+        {% endif %}
+
+        {% if bride['Send_Or_Receive'] == 'Sender' %}
+          {% if bride['Sender_status'] == 'Waiting' %}
+          <button class="request-sent-btn bg-orange-500 text-white py-1.5 px-4 rounded-full shadow-md text-sm"
+                  data-bride-username="{{ bride['username'] }}">Request Sent</button>
+          {% elif bride['Sender_status'] == 'Approved' %}
+          <button class="accepted-btn bg-green-500 text-white py-1.5 px-4 rounded-full shadow-md text-sm"
+                  data-bride-username="{{ bride['username'] }}">Accepted</button>
+          <a href="{{ url_for('bride_complete_profile', username=bride['username'], viewer=profile['username']) }}" 
+             class="view-profile-btn bg-purple-500 hover:bg-purple-600 text-white py-1.5 px-4 rounded-full shadow-md text-sm">📄 View Complete Profile</a>
+          {% endif %}
+        {% elif bride['Send_Or_Receive'] == 'Receiver' %}
+          {% if bride['Sender_status'] == 'Waiting' %}
+          <button class="request-received-btn bg-blue-500 text-white py-1.5 px-4 rounded-full shadow-md text-sm"
+                  data-bride-username="{{ bride['username'] }}">Accept Request</button>
+          {% elif bride['Sender_status'] == 'Approved' %}
+          <button class="accepted-btn bg-green-500 text-white py-1.5 px-4 rounded-full shadow-md text-sm"
+                  data-bride-username="{{ bride['username'] }}">Accepted</button>
+          <a href="{{ url_for('bride_complete_profile', username=bride['username'], viewer=profile['username']) }}" 
+             class="view-profile-btn bg-purple-500 hover:bg-purple-600 text-white py-1.5 px-4 rounded-full shadow-md text-sm">📄 View Complete Profile</a>
+          {% endif %}
+        {% else %}
+        <button class="send-request-btn bg-green-500 hover:bg-green-600 text-white py-1.5 px-4 rounded-full shadow-md text-sm"
+                data-bride-username="{{ bride['username'] }}">💌 Send Request</button>
+        {% endif %}
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+</div>
+
+  <!-- Image Modal -->
+  <div id="imageModal" class="fixed inset-0 bg-black/70 backdrop-blur-md flex items-center justify-center hidden z-50 transition-all duration-500 ease-in-out">
+    <div class="relative bg-gradient-to-br from-pink-100 via-white to-pink-200 rounded-3xl shadow-2xl border-2 border-pink-300 p-6 w-[90%] max-w-3xl h-[85vh] flex flex-col items-center animate-fadeIn">
+  
+      <!-- Close Button -->
+      <button id="closeImageModal" class="absolute top-4 right-4 text-pink-700 hover:text-red-500 text-3xl font-bold">&times;</button>
+  
+      <!-- Image Display Area -->
+      <div id="imageContainer"
+     class="flex-1 flex items-center justify-center overflow-hidden w-full h-full p-0 bg-white rounded-xl">
+
+      <img id="modalImage"
+      src=""
+      alt="Zoomed Image"
+      class="transition-transform duration-300 ease-in-out w-auto h-auto max-w-none max-h-none object-contain pointer-events-none select-none"
+      style="max-width: 100%; max-height: 100%; transform: scale(1); transform-origin: center;" />
+ 
+ </div>
+ 
+  
+      <!-- Controls -->
+      <div class="mt-6 flex justify-between items-center w-full px-4">
+        <button id="prevImage" class="bg-pink-500 hover:bg-pink-600 text-white font-semibold py-2 px-5 rounded-full shadow-lg transition-all">⟵ Prev</button>
+        <button id="resetZoom" class="bg-gray-500 hover:bg-gray-600 text-white font-semibold py-2 px-5 rounded-full shadow-lg transition-all">🔄 Reset Zoom</button>
+        <button id="nextImage" class="bg-pink-500 hover:bg-pink-600 text-white font-semibold py-2 px-5 rounded-full shadow-lg transition-all">Next ⟶</button>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Video Modal -->
+  <div id="videoModal" class="fixed inset-0 bg-black/70 flex items-center justify-center hidden z-50">
+    <div class="relative bg-white rounded-lg shadow-lg p-6 max-w-3xl w-full">
+      <button id="closeVideoModal" class="absolute top-2 right-2 text-gray-500 hover:text-gray-800 text-2xl">&times;</button>
+      <video id="modalVideo" controls class="w-full h-auto rounded-lg"></video>
+        <source src="" type="video/mp4" />
+        Your browser does not support the video tag.
+      </video>
+    </div>
+  </div>
+
+  <script src="https://cdn.socket.io/4.5.1/socket.io.min.js"></script>
+  <script>
+    // Initialize the socket variable only once
+    const socket = io();
+
+    // Listen for updates to the Requests table
+    socket.on('update_request', (data) => {
+      const { sender, receiver } = data;
+
+      // Check if the current user is involved in the request
+      if (sender === "{{ profile['username'] }}" || receiver === "{{ profile['username'] }}") {
+        // Refresh the page if the current user is the sender or receiver
+        location.reload();
+      }
+    });
+  </script>
+
+  <script>
+    // Image Modal Logic
+    const imageModal = document.getElementById('imageModal');
+    const modalImage = document.getElementById('modalImage');
+    const closeImageModal = document.getElementById('closeImageModal');
+    const prevImage = document.getElementById('prevImage');
+    const nextImage = document.getElementById('nextImage');
+    const resetZoom = document.getElementById('resetZoom');
+    const imageContainer = document.getElementById('imageContainer');
+
+    let currentImages = [];
+    let currentIndex = 0;
+    let zoomLevel = 1;
+
+    function updateImage() {
+      modalImage.src = currentImages[currentIndex];
+
+      modalImage.onload = () => {
+        const imgWidth = modalImage.naturalWidth;
+        const imgHeight = modalImage.naturalHeight;
+
+        const containerWidth = imageContainer.clientWidth;
+        const containerHeight = imageContainer.clientHeight;
+
+        const widthRatio = containerWidth / imgWidth;
+        const heightRatio = containerHeight / imgHeight;
+
+        // Fit to the smaller ratio to prevent overflow, but cap it at 2x (or more if you want)
+        zoomLevel = Math.min(widthRatio, heightRatio, 2);
+
+        updateZoom();
+      };
+    }
+
+    function updateZoom() {
+      modalImage.style.transform = `scale(${zoomLevel})`;
+    }
+
+    // Open modal
+    document.querySelectorAll('.view-images-btn').forEach((btn) => {
+      btn.addEventListener('click', () => {
+        currentImages = JSON.parse(btn.dataset.images);
+        currentIndex = 0;
+        updateImage();
+        imageModal.classList.remove('hidden');
+      });
+    });
+
+    // Navigation
+    prevImage.addEventListener('click', () => {
+      if (currentIndex > 0) {
+        currentIndex--;
+        updateImage();
+      }
+    });
+
+    nextImage.addEventListener('click', () => {
+      if (currentIndex < currentImages.length - 1) {
+        currentIndex++;
+        updateImage();
+      }
+    });
+
+    // Close modal
+    closeImageModal.addEventListener('click', () => {
+      imageModal.classList.add('hidden');
+    });
+
+    // Reset zoom
+    resetZoom.addEventListener('click', () => {
+      zoomLevel = 1;
+      updateZoom();
+    });
+
+    // Scroll to zoom
+    imageContainer.addEventListener('wheel', (e) => {
+      e.preventDefault();
+      const delta = e.deltaY || e.wheelDelta;
+      if (delta < 0) {
+        zoomLevel += 0.1;
+      } else if (delta > 0 && zoomLevel > 0.2) {
+        zoomLevel -= 0.1;
+      }
+      updateZoom();
+    }, { passive: false });
+
+    // Video Modal Logic
+    const videoModal = document.getElementById('videoModal');
+    const modalVideo = document.getElementById('modalVideo');
+    const closeVideoModal = document.getElementById('closeVideoModal');
+
+    document.querySelectorAll('.view-video-btn').forEach((btn) => {
+      btn.addEventListener('click', () => {
+        modalVideo.src = btn.dataset.video;
+        videoModal.classList.remove('hidden');
+      });
+    });
+
+    closeVideoModal.addEventListener('click', () => {
+      modalVideo.pause();
+      modalVideo.src = '';
+      videoModal.classList.add('hidden');
+    });
+
+    // Send Request Logic
+    document.querySelectorAll('.send-request-btn').forEach((btn) => {
+      btn.addEventListener('click', async () => {
+        const brideUsername = btn.dataset.brideUsername;
+        const senderUsername = "{{ profile['username'] }}";
+
+        try {
+          const response = await fetch('/send_request', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+              sender: senderUsername,
+              receiver: brideUsername,
+            }),
+          });
+
+          if (response.ok) {
+            btn.textContent = 'Request Sent';
+            btn.classList.remove('bg-green-500', 'hover:bg-green-600');
+            btn.classList.add('bg-orange-500', 'hover:bg-orange-600');
+            btn.disabled = true;
+
+            const viewProfileBtn = btn.nextElementSibling;
+            if (viewProfileBtn && viewProfileBtn.classList.contains('view-profile-btn')) {
+              viewProfileBtn.classList.remove('hidden');
+            }
+          } else {
+            console.error('Failed to send request');
+          }
+        } catch (error) {
+          console.error('Error:', error);
+        }
+      });
+    });
+
+    // Handle Request Received button click
+    document.querySelectorAll('.request-received-btn').forEach((btn) => {
+      btn.addEventListener('click', async () => {
+        const brideUsername = btn.dataset.brideUsername;
+        const senderUsername = "{{ profile['username'] }}";
+
+        try {
+          const response = await fetch('/approve_request', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+              sender: brideUsername,
+              receiver: senderUsername,
+            }),
+          });
+
+          if (response.ok) {
+            btn.textContent = 'Accepted';
+            btn.classList.remove('bg-blue-500');
+            btn.classList.add('bg-green-500');
+            btn.classList.add('accepted-btn');
+            btn.classList.remove('request-received-btn');
+            const viewProfileBtn = btn.nextElementSibling;
+            if (viewProfileBtn && viewProfileBtn.classList.contains('view-profile-btn')) {
+              viewProfileBtn.classList.remove('hidden');
+            }
+          }
+        } catch (error) {
+          console.error('Error:', error);
+        }
+      });
+    });
+
+    // Handle Request Sent button click
+    document.querySelectorAll('.request-sent-btn').forEach((btn) => {
+      btn.addEventListener('click', async () => {
+        const brideUsername = btn.dataset.brideUsername;
+        const senderUsername = "{{ profile['username'] }}";
+
+        try {
+          const response = await fetch('/cancel_request', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+              sender: senderUsername,
+              receiver: brideUsername,
+            }),
+          });
+
+          if (response.ok) {
+            btn.textContent = 'Send Request';
+            btn.classList.remove('bg-orange-500');
+            btn.classList.add('bg-green-500');
+            btn.classList.add('send-request-btn');
+            btn.classList.remove('request-sent-btn');
+            const viewProfileBtn = btn.nextElementSibling;
+            if (viewProfileBtn && viewProfileBtn.classList.contains('view-profile-btn')) {
+              viewProfileBtn.classList.add('hidden');
+            }
+          }
+        } catch (error) {
+          console.error('Error:', error);
+        }
+      });
+    });
+
+    // Handle Accepted button click
+    document.querySelectorAll('.accepted-btn').forEach((btn) => {
+      btn.addEventListener('click', async () => {
+        const brideUsername = btn.dataset.brideUsername;
+        const senderUsername = "{{ profile['username'] }}";
+
+        try {
+          const response = await fetch('/delete_request', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+              sender: senderUsername,
+              receiver: brideUsername,
+            }),
+          });
+
+          if (response.ok) {
+            btn.textContent = 'Send Request';
+            btn.classList.remove('accepted-btn');
+            btn.classList.add('send-request-btn');
+            btn.classList.remove('bg-green-500');
+            btn.classList.add('bg-green-500');
+            const viewProfileBtn = btn.nextElementSibling;
+            if (viewProfileBtn && viewProfileBtn.classList.contains('view-profile-btn')) {
+              viewProfileBtn.classList.add('hidden');
+            }
+          }
+        } catch (error) {
+          console.error('Error:', error);
+        }
+      });
+    });
+
+    // Handle Send Request button click
+    document.querySelectorAll('.send-request-btn').forEach((btn) => {
+      btn.addEventListener('click', async () => {
+        const brideUsername = btn.dataset.brideUsername;
+        const senderUsername = "{{ profile['username'] }}";
+
+        try {
+          const response = await fetch('/send_request', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+              sender: senderUsername,
+              receiver: brideUsername,
+            }),
+          });
+
+          if (response.ok) {
+            btn.textContent = 'Request Sent';
+            btn.classList.remove('send-request-btn', 'bg-green-500');
+            btn.classList.add('request-sent-btn', 'bg-orange-500');
+            btn.dataset.action = 'cancel'; // Update action to cancel
+          }
+        } catch (error) {
+          console.error('Error:', error);
+        }
+      });
+    });
+
+    // Handle Request Sent button click
+    document.querySelectorAll('.request-sent-btn').forEach((btn) => {
+      btn.addEventListener('click', async () => {
+        const brideUsername = btn.dataset.brideUsername;
+        const senderUsername = "{{ profile['username'] }}";
+
+        try {
+          const response = await fetch('/cancel_request', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+              sender: senderUsername,
+              receiver: brideUsername,
+            }),
+          });
+
+          if (response.ok) {
+            btn.textContent = 'Send Request';
+            btn.classList.remove('request-sent-btn', 'bg-orange-500');
+            btn.classList.add('send-request-btn', 'bg-green-500');
+            btn.dataset.action = 'send'; // Update action to send
+          }
+        } catch (error) {
+          console.error('Error:', error);
+        }
+      });
+    });
+
+    // Handle Request Received button click
+    document.querySelectorAll('.request-received-btn').forEach((btn) => {
+      btn.addEventListener('click', async () => {
+        const brideUsername = btn.dataset.brideUsername;
+        const senderUsername = "{{ profile['username'] }}";
+
+        try {
+          const response = await fetch('/approve_request', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+              sender: brideUsername,
+              receiver: senderUsername,
+            }),
+          });
+
+          if (response.ok) {
+            btn.textContent = 'Accepted';
+            btn.classList.remove('request-received-btn', 'bg-blue-500');
+            btn.classList.add('accepted-btn', 'bg-green-500');
+            btn.dataset.action = 'delete'; // Update action to delete
+
+            // Show the View Complete Profile button
+            const viewProfileBtn = btn.nextElementSibling;
+            if (viewProfileBtn && viewProfileBtn.classList.contains('view-profile-btn')) {
+              viewProfileBtn.classList.remove('hidden');
+            }
+          }
+        } catch (error) {
+          console.error('Error:', error);
+        }
+      });
+    });
+
+    // Handle Accepted button click
+    document.querySelectorAll('.accepted-btn').forEach((btn) => {
+      btn.addEventListener('click', async () => {
+        const brideUsername = btn.dataset.brideUsername;
+        const senderUsername = "{{ profile['username'] }}";
+
+        try {
+          const response = await fetch('/delete_request', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+              sender: senderUsername,
+              receiver: brideUsername,
+            }),
+          });
+
+          if (response.ok) {
+            btn.textContent = 'Send Request';
+            btn.classList.remove('accepted-btn', 'bg-green-500');
+            btn.classList.add('send-request-btn', 'bg-green-500');
+            btn.dataset.action = 'send'; // Update action to send
+
+            // Hide the View Complete Profile button
+            const viewProfileBtn = btn.nextElementSibling;
+            if (viewProfileBtn && viewProfileBtn.classList.contains('view-profile-btn')) {
+              viewProfileBtn.classList.add('hidden');
+            }
+          }
+        } catch (error) {
+          console.error('Error:', error);
+        }
+      });
+    });
+  </script>
+
+</body>
+</html>

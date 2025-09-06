@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Frequently Asked Questions</title>
+<style>
+    body {
+        margin: 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        overflow: hidden;
+    }
+
+    .cards {
+        position: relative;
+        width: 700px;
+        height: 450px;
+        perspective: 1500px;
+    }
+
+    .card {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-size: contain;
+        background-position: center;
+        border-radius: 10px;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        transition: transform 0.6s ease, opacity 0.6s ease;
+        transform-style: preserve-3d;
+    }
+
+    /* Spread positions */
+    .card:nth-child(1) { transform: translate(-200px, -50px) rotate(-10deg) scale(0.8); z-index: 1; opacity: 0.5; }
+    .card:nth-child(2) { transform: translate(-100px, -25px) rotate(-5deg) scale(0.9); z-index: 2; opacity: 0.7; }
+    .card:nth-child(3) { transform: translate(0, 0) rotate(0deg) scale(1); z-index: 3; opacity: 1; }
+    .card:nth-child(4) { transform: translate(100px, 25px) rotate(5deg) scale(0.9); z-index: 2; opacity: 0.7; }
+    .card:nth-child(5) { transform: translate(200px, 50px) rotate(10deg) scale(0.8); z-index: 1; opacity: 0.5; }
+
+    /* Flip animation */
+    .flip {
+        animation: flipBack 2s ease forwards;
+    }
+
+    @keyframes flipBack {
+        0% { transform: translate(0,0) rotateY(0deg) scale(1); opacity: 1; }
+        50% { transform: translate(0,-20px) rotateY(90deg) scale(1); opacity: 0.7; }
+        100% { transform: translate(-200px, -50px) rotate(-10deg) scale(0.8) rotateY(180deg); opacity: 0.5; }
+    }
+</style>
+</head>
+<body>
+
+<div class="cards">
+    <div class="card" style="background-image: url('../static/images/faqs/img1.jpg');"></div>
+    <div class="card" style="background-image: url('../static/images/faqs/img2.jpg');"></div>
+    <div class="card" style="background-image: url('../static/images/faqs/img3.jpg');"></div>
+    <div class="card" style="background-image: url('../static/images/faqs/img4.jpg');"></div>
+    <div class="card" style="background-image: url('../static/images/faqs/img5.jpg');"></div>
+    <div class="card" style="background-image: url('../static/images/faqs/img6.jpg');"></div>
+</div>
+
+<script>
+    const cardsContainer = document.querySelector('.cards');
+    let isFlipping = false; // lock to allow one flip at a time
+
+    function moveNext() {
+    if (isFlipping) return;
+    isFlipping = true;
+    const cards = document.querySelectorAll('.card');
+    const firstCard = cards[0];
+    cardsContainer.appendChild(firstCard);
+    isFlipping = false;
+}
+
+
+    function movePrev() {
+        if (isFlipping) return;
+        isFlipping = true;
+        const cards = document.querySelectorAll('.card');
+        const lastCard = cards[cards.length - 1];
+        cardsContainer.prepend(lastCard);
+        setTimeout(() => {
+            isFlipping = false;
+        }, 600);
+    }
+
+    window.addEventListener('click', (event) => {
+    const screenWidth = window.innerWidth;
+    if (event.clientX < screenWidth / 2) {
+        movePrev();  // click on left side
+    } else {
+        moveNext();  // click on right side
+    }
+});
+</script>
+
+</body>
+</html>
