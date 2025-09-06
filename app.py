@@ -17,6 +17,10 @@ from flask_socketio import SocketIO
 from dotenv import load_dotenv
 from groq import Groq
 
+
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))  # app.py ka folder
+DB_PATH = os.path.join(BASE_DIR, 'jeevansathi.db')     # DB file ka path
+
 # -------------------- App Config --------------------
 load_dotenv()
 
