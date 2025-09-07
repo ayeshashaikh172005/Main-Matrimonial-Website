@@ -112,7 +112,6 @@ def init_db():
             sender TEXT NOT NULL,
             receiver TEXT NOT NULL,
             status TEXT,           -- new unified column
-            status_sender TEXT     -- legacy support
         )
     """)
 
@@ -753,7 +752,7 @@ def send_request():
 
     # Insert the request into the Requests table
     cursor.execute('''
-        INSERT INTO Requests (sender, receiver, status_sender)
+        INSERT INTO Requests (sender, receiver, status)
         VALUES (?, ?, ?)
     ''', (sender, receiver, 'Waiting'))
 
@@ -777,7 +776,7 @@ def approve_request():
     cursor = conn.cursor()
     cursor.execute('''
         UPDATE Requests
-        SET status_sender = 'Approved'
+        SET status = 'Approved'
         WHERE sender = ? AND receiver = ?
     ''', (sender, receiver))
     conn.commit()
