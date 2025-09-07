@@ -737,19 +737,9 @@ def send_request():
     conn = sqlite3.connect('jeevansathi.db')
     cursor = conn.cursor()
 
-    # Ensure the Requests table exists
-    cursor.execute('''
-        CREATE TABLE IF NOT EXISTS Requests (
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
-            sender TEXT NOT NULL,
-            receiver TEXT NOT NULL,
-            status_sender TEXT NOT NULL
-        )
-    ''')
-
     # Insert the request into the Requests table
     cursor.execute('''
-        INSERT INTO Requests (sender, receiver, status_sender)
+        INSERT INTO Requests (sender, receiver, sender)
         VALUES (?, ?, ?)
     ''', (sender, receiver, 'Waiting'))
 
@@ -773,7 +763,7 @@ def approve_request():
     cursor = conn.cursor()
     cursor.execute('''
         UPDATE Requests
-        SET status_sender = 'Approved'
+        SET sender = 'Approved'
         WHERE sender = ? AND receiver = ?
     ''', (sender, receiver))
     conn.commit()
@@ -923,10 +913,6 @@ def get_db_connection():
 # Load FAQs
 with open('faqs.json', 'r') as f:
     faqs = json.load(f)
-
-@app.route("/chatbot")
-def hchatbot():
-    return render_template("chatbot.html")
 
 @app.route("/chat", methods=["POST"])
 def chat():
