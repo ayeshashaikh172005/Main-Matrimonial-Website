@@ -1070,5 +1070,9 @@ Output format:
 
 # -------------------- Run App --------------------
 if __name__ == "__main__":
-    socketio.run(app, host="127.0.0.1", port=5000, debug=True)
+    import eventlet
+    eventlet.monkey_patch()
+    from app import app, socketio
+    socketio.run(app, host="0.0.0.0", port=8000, debug=True)
+
 
