@@ -4,6 +4,9 @@ import os
 import re
 import json
 import sqlite3
+import eventlet
+eventlet.monkey_patch()
+from app import app, socketio
 from datetime import datetime, date
 from werkzeug.utils import secure_filename
 
@@ -1069,9 +1072,6 @@ Output format:
 
 # -------------------- Run App --------------------
 if __name__ == "__main__":
-    import eventlet
-    eventlet.monkey_patch()
-    from app import app, socketio
     socketio.run(app, host="0.0.0.0", port=5050, debug=True, use_reloader=False)
 
 
