@@ -4,9 +4,6 @@ import os
 import re
 import json
 import sqlite3
-import eventlet
-eventlet.monkey_patch()
-from app import app, socketio
 from datetime import datetime, date
 from werkzeug.utils import secure_filename
 
@@ -19,10 +16,6 @@ from flask_socketio import SocketIO
 
 from dotenv import load_dotenv
 from groq import Groq
-
-
-BASE_DIR = os.path.dirname(os.path.abspath(__file__))  # app.py ka folder
-DB_PATH = os.path.join(BASE_DIR, 'jeevansathi.db')     # DB file ka path
 
 # -------------------- App Config --------------------
 load_dotenv()
@@ -115,6 +108,7 @@ def init_db():
             sender TEXT NOT NULL,
             receiver TEXT NOT NULL,
             status TEXT,           -- new unified column
+            status_sender TEXT     -- legacy support
         )
     """)
 
@@ -755,7 +749,7 @@ def send_request():
 
     # Insert the request into the Requests table
     cursor.execute('''
-        INSERT INTO Requests (sender, receiver, status)
+        INSERT INTO Requests (sender, receiver, status_sender)
         VALUES (?, ?, ?)
     ''', (sender, receiver, 'Waiting'))
 
@@ -779,7 +773,7 @@ def approve_request():
     cursor = conn.cursor()
     cursor.execute('''
         UPDATE Requests
-        SET status = 'Approved'
+        SET status_sender = 'Approved'
         WHERE sender = ? AND receiver = ?
     ''', (sender, receiver))
     conn.commit()
@@ -1072,6 +1066,5 @@ Output format:
 
 # -------------------- Run App --------------------
 if __name__ == "__main__":
-    socketio.run(app, host="0.0.0.0", port=5002, debug=True, use_reloader=False)
-
+    socketio.run(app, host="127.0.0.1", port=5000, debug=True)
 
